@@ -6,8 +6,8 @@
 #include <errno.h>
 
 void initShader(ShaderAddrT* shader, char* vertexPath, char* fragmentPath) {
-    const char* vertexCode = NULL;
-    const char* fragmentCode = NULL;
+    const char* vertexCode;
+    const char* fragmentCode;
     FILE* vShaderFile = NULL;
     FILE* fShaderFile = NULL;
     long length = 0;
@@ -21,6 +21,7 @@ void initShader(ShaderAddrT* shader, char* vertexPath, char* fragmentPath) {
         fclose(vShaderFile);
         free(vShaderFile);
         vShaderFile = NULL;
+        return;
     } else {
         vertexCode = readShaderFile(vShaderFile);
         fclose(vShaderFile);
@@ -31,30 +32,33 @@ void initShader(ShaderAddrT* shader, char* vertexPath, char* fragmentPath) {
         fclose(fShaderFile);
         free(fShaderFile);
         fShaderFile = NULL;
+        return;
     } else {
         fragmentCode = readShaderFile(fShaderFile);
         fclose(fShaderFile);
     }
     
+    /* If char buffers are not NULL, then begin parsing data 
+     ------------------------------------------------- */
     if (vertexCode && fragmentCode) {
         // vertex Shader
         (*shader)->vertex = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource((*shader)->vertex, 1, vertexCode, NULL);
+        glShaderSource((*shader)->vertex, 1, &vertexCode, NULL);
         glCompileShader((*shader)->vertex);
-        // checkCompileErrors((*shader)->vertex, "VERTEX");
+        checkCompileErrors((*shader)->vertex, "VERTEX");
         
         // fragment Shader
         (*shader)->fragment = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource((*shader)->fragment, 1, fragmentCode, NULL);
+        glShaderSource((*shader)->fragment, 1, &fragmentCode, NULL);
         glCompileShader((*shader)->fragment);
-        // checkCompileErrors((*shader)->fragment, "FRAGMENT");
+        checkCompileErrors((*shader)->fragment, "FRAGMENT");
         
         // shader Program
         (*shader)->ID = glCreateProgram();
         glAttachShader((*shader)->ID, (*shader)->vertex);
         glAttachShader((*shader)->ID, (*shader)->fragment);
         glLinkProgram((*shader)->ID);
-        // checkCompileErrors((*shader)->ID, "PROGRAM");
+        checkCompileErrors((*shader)->ID, "PROGRAM");
         
         // delete shaders now that they're attached to the program
         glDeleteShader((*shader)->vertex);
@@ -97,7 +101,7 @@ void setFloat(char* name, float value, unsigned int ID) {
     glUniform1f(glGetUniformLocation(ID, name), value);
 }
 
-void CheckCompileErrors(unsigned int shader, char* type) {
+void checkCompileErrors(unsigned int shader, char* type) {
     int success;
     char infoLog[1024];
     

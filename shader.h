@@ -44,7 +44,7 @@ void setInt(char* name, int value, unsigned int ID);
 void setFloat(char* name, float value, unsigned int ID);
 
 // utitlity function for checking shader compilation/linking errors
-void CheckCompileErrors(unsigned int shader, char* type);
+void checkCompileErrors(unsigned int shader, char* type);
 
 #endif /* SHADER_H */
 
