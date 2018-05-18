@@ -236,21 +236,6 @@ int main(int argc, char** argv) {
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
         
-        /*
-        // transformations 
-        // ----------------------------------- 
-        mat4 transform;
-        glmc_translate(transform, (vec3){0.5f, -0.5f, 0.0f});
-        glmc_rotate(transform, (float)glfwGetTime(), (vec3){0.0f, 0.0f, 1.0f});
-        
-        // render triangles 
-        // ----------------------------------- 
-        unsigned int transformLoc = glGetUniformLocation(shader->ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (float*)transform);
-        
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3); */
-        
         /* glfw: swap buffers and poll IO events 
          ------------------------------------ */
         glfwSwapBuffers(window);
