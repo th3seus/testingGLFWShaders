@@ -1,6 +1,6 @@
 #include "shader.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <cglm/cglm.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -99,6 +99,34 @@ void setInt(char* name, int value, unsigned int ID) {
 
 void setFloat(char* name, float value, unsigned int ID) {
     glUniform1f(glGetUniformLocation(ID, name), value);
+}
+
+void setVec2(char* name, vec2* value, unsigned int ID) {
+    glUniform2fv(glGetUniformLocation(ID, name), 1, value[0]);
+}
+
+void setVec3v(char* name, vec3* value, unsigned int ID) {
+    glUniform3fv(glGetUniformLocation(ID, name), 1, value[0]);
+}
+
+void setVec3f(char* name, float x, float y, float z, unsigned int ID) {
+    glUniform3f(glGetUniformLocation(ID, name), x, y, z);
+}
+
+void setVec4v(char* name, vec4* value, unsigned int ID) {
+    glUniform4fv(glGetUniformLocation(ID, name), 1, value[0]);
+}
+
+void setVec4f(char* name, float x, float y, float z, float w, unsigned int ID) {
+    glUniform4f(glGetUniformLocation(ID, name), x, y, z, w);
+}
+
+void setMat3(char* name, mat3* mat, unsigned int ID) {
+    glUniformMatrix3fv(glGetUniformLocation(ID, name), 1, GL_FALSE, mat[0][0]);
+}
+
+void setMat4(char* name, mat4* mat, unsigned int ID) {
+    glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, mat[0][0]);
 }
 
 void checkCompileErrors(unsigned int shader, char* type) {
